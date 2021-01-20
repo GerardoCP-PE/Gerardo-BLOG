@@ -7,13 +7,14 @@ using Gerardo_BLOG.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace Gerardo_BLOG.Controllers
 {
     ///
     ///Summary : Interface to REST API Category
     ///
-[Route("api/Category")]
+    [Route("api/categories")]
     [ApiController]
     public class ICategoryController : ControllerBase
     {
@@ -51,6 +52,16 @@ namespace Gerardo_BLOG.Controllers
             return l1;
         }
 
+        [HttpGet("{id}/posts")]
+        public  ActionResult<IEnumerable<Post>> GetCategoryPosts(int id)
+        {
+            var d =  _context.Posts.Where(x => x.CategoryId == id).ToArray();
+             if (d.Length == 0)
+                  return NotFound();
+
+            return d;
+        }
+
     }
-    
+
 }

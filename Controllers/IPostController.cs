@@ -13,7 +13,7 @@ namespace Gerardo_BLOG.Controllers
     ///
     ///Summary : Interface to REST API Posts
     ///
-[Route("api/Post")]
+[Route("api/posts")]
     [ApiController]
     public class IPostController : ControllerBase
     {
