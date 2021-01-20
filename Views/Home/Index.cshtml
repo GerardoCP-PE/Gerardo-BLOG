@@ -1,0 +1,152 @@
+﻿@*
+This view use the dynamic model to show post and categories
+Also, recieve a list of categories to show the title value in posts table
+*@
+@using Gerardo_BLOG.Models;
+@model dynamic  
+@{
+    ViewData["Title"] = "Home Page";
+}
+@if (ViewData["success"] != null)
+{
+  <div class="alert alert-success" id="msg">@ViewData["success"]</div>
+}
+
+@if ( ViewBag.Msg != null )
+{
+    if(ViewBag.IsError == 0)
+    {
+        <div class="alert alert-success" id="msg">@ViewBag.Msg</div>
+    }else
+    {
+        <div class="alert alert-danger" id="msg">@ViewBag.Msg</div>
+    }
+}
+<div class="text-center">
+    <h1 class="display-4">Categories and Posts</h1>
+</div>
+<h3>Category</h3>
+<p> 
+    <input class="btn btn-primary" type="button" value="Add Category" onclick="location.href='@Url.Action("Create", "Category")'" />
+</p>
+@if (Model.VCategories == null)
+{
+ <div class="text-center">
+    There are no items yet
+  </div>
+}
+else
+{
+<style>
+.tableFixHead          { overflow-y: auto; height: 300px; }
+.tableFixHead thead th { position: sticky; top: 0; }
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+th, td { padding: 8px 16px; }
+th     { background:#eee; }
+</style>
+ <div class="tableFixHead">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>         
+          <th scope="col">Title</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var obj in Model.VCategories)
+        {
+          <tr>            
+            <td>
+                <a href="@Url.Action("Edit", "Category", new { id = @obj.Id })">
+                  @obj.Title
+                </a>
+             <td>
+                <a id="Delete" class="btn btn-danger Delete" data-target="#basic" data-toggle="modal"
+                  data-path="@Url.Action("Delete", "Category", new { id = @obj.Id })">
+                  Delete
+                </a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+</div>
+}
+<h3>Post</h3>
+<p>
+  <input class="btn btn-primary" type="button" value="Add Post" onclick="location.href='@Url.Action("Create", "Post")'" />
+</p>
+ @if (Model.VPosts == null)
+{
+ <div class="text-center">
+    There are no items yet
+  </div>
+}
+else
+{
+ <div class="tableFixHead">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>          
+            <th scope="col">Category</th>
+            <th scope="col">Title</th>
+            <th scope="col">Pub. date</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var obj in Model.VPosts)
+        {
+          <tr>
+              <td>
+                  @foreach (var obj2 in (IEnumerable<SelectListItem>)ViewBag.ListCategories)
+                    {
+                        @if(obj.CategoryId.ToString() == obj2.Value)
+                        {
+                        <a>@obj2.Text</a>
+                        }
+                    }                
+              </td>
+            <td>
+                <a href="@Url.Action("Edit", "Post", new { id = @obj.Id })">
+                  @obj.Title
+                </a>
+            </td>
+              <td>
+                <a>@obj.publicationDate.ToString("dd/MM/yyyy")</a>
+              </td>
+              <td>
+                <a id="Delete" class="btn btn-danger Delete" data-target="#basic" data-toggle="modal"
+                  data-path="@Url.Action("Delete", "Post", new { id = @obj.Id })">
+                  Delete
+                </a>
+              </td>
+            
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+
+<div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLongTitle">Delete Confirmation</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this item?
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" type="button" class="btn btn-default">Cancel</button>
+        <button id="btnContinueDelete" type="button" class="btn btn-primary">Delete</button>
+      </div>
+    </div>
+  </div>  

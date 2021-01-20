@@ -1,0 +1,29 @@
+@model Category
+@{
+
+    ViewData["Title"] = "Edit Category";
+    Layout = "_Layout";
+}
+
+<h1>@ViewData["Title"]</h1>
+<style>
+    .invalid-feedback {
+        display: block; /* Bootstrap oculta este campo a menos que el formulario tenga otras clases, por eso el workaround */
+    }
+
+</style>
+
+
+<form method="POST" class="form-control">
+   <div class="form-group">
+       @Html.HiddenFor(x => x.Id)
+    <div>
+        @Html.LabelFor(x => x.Title)
+        @Html.TextBoxFor(x => x.Title, new { @class = "form-control" , autofocus=""  } )
+        <!-- Aca muestra el mensaje de error -->
+        @Html.ValidationMessageFor(x => x.Title, "", new { @class = "invalid-feedback" })
+    </div>
+    <div>
+   <input type="submit" class="btn btn-primary" value="Save"/>
+    </div>
+</form>

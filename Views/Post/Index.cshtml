@@ -1,0 +1,14 @@
+﻿@*
+This view is only for one model, the exercise need two models,
+This view will not to use
+*@
+
+
+@model IEnumerable<Post>
+@{
+    ViewData["Title"] = "Welcome to Gerardo's Blog";
+}
+<div class="text-center">
+<h1 class="display-4">List of posts</h1>
+</div>
+<partial name="_PartialObjectBlog"/>

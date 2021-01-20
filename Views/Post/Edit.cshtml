@@ -1,0 +1,43 @@
+@model Post
+@{
+    ViewData["Title"] = "Edit Post";
+    Layout = "_Layout";
+}
+
+<h1>@ViewData["Title"]</h1>
+<style>
+    .invalid-feedback {
+        display: block; /* Bootstrap oculta este campo a menos que el formulario tenga otras clases, por eso el workaround */
+    }
+;
+</style>
+<form method="POST" class="form-control">
+   <div class="form-group">
+        @Html.HiddenFor(x => x.Id)
+    <div>
+        @Html.LabelFor(x => x.Title)
+        @Html.TextBoxFor(x => x.Title, new { @class = "form-control" , autofocus="" } )
+        <!-- Aca muestra el mensaje de error -->
+        @Html.ValidationMessageFor(x => x.Title, "", new { @class = "invalid-feedback" })
+    </div>
+    <div>
+        @Html.LabelFor(x=>x.CategoryId,"Category")
+        @Html.DropDownListFor(x=>x.CategoryId, (IEnumerable<SelectListItem>)ViewBag.ListCategories,"Please select category"
+            ,new {@class="form-control"})
+        @Html.ValidationMessageFor(x => x.CategoryId, "", new { @class = "invalid-feedback" })
+    </div>
+    <div>
+        @Html.LabelFor(x=>x.publicationDate,"Pub Date")
+        @Html.EditorFor(x => x.publicationDate, new { htmlAttributes = new {  @class = "form-control datepicker", @id = "txtDate" } })
+        @Html.ValidationMessageFor(x => x.publicationDate, "", new { @class = "invalid-feedback" })
+    </div>
+     <div>
+        @Html.LabelFor(x=>x.contents,"Content")
+        @Html.TextAreaFor(x=>x.contents,4,1,new {@class="form-control"})
+        @Html.ValidationMessageFor(x => x.contents, "", new { @class = "invalid-feedback" })
+    </div>
+
+   <div>
+   <input type="submit" class="btn btn-primary" value="Save"/>
+    </div>
+</form>
